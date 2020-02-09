@@ -1,0 +1,31 @@
+Source = Sorgente dati.
+Symbol = Ticker del titolo.
+Change % = Variazione percentuale del prezzo.
+Close price	= Prezzo alla chiusura.
+Open price = Prezzo all'apertura.
+Change $ = Variazione del prezzo.
+Volume = Numero dei contratti di un asset in un giorno.
+High price = Prezzo più alto raggiunto durante la giornata.
+Low price = Prezzo più basso raggiunto durante la giornata.
+Previous close = Prezzo chiusura del giorno precedente.
+Year high = Prezzo più alto raggiunto durante l'anno.
+Year low = Prezzo più basso raggiunto durante l'anno.
+Shares Outstanding = Numero di azioni circolanti.
+P/E	= Rapporto tra prezzo e utile di una singola azione.
+Market cap = Valore totale dell'azienda = Prezzo attuale x numero di azioni in circolazione.
+Yield = Dividendo pagato per azione.
+DividendYield = Rapporto tra dividendo e il prezzo di una singola azione.
+EPS(Earning per share) = Utile per azione = Utile netto diviso il numero di azioni circolanti.
+
+CONSISTENZA
+PREVIOUS CLOSE sia uguale a OPEN PRICE (non avviene sempre, TRANSAZIONI A MERCATO CHIUSO)
+HIGH PRICE sia maggiore o uguale a LOW PRICE
+YEAR HIGH sia maggiore o uguale YEAR LOW
+SHARES OUTSTANDING sia maggiore o uguale a 0
+VOLUME sia maggiore o uguale a 0
+P/E sia maggiore o uguale a 0, infatti sia il prezzo che l'utile non possono essere negativi.
+Market Cap sia maggiore o uguale a 0
+Yield sia maggiore o uguale a 0
+DividendYield sia maggiore o uguale a 0
+EPS sia maggiore o uguale a 0 e non maggiore
+
