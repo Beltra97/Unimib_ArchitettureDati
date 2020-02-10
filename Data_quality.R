@@ -1,5 +1,6 @@
 #PROGETTO ARCHITETTURA DATI 2019/2020
 #setwd("/Users/fabiobeltramelli/Desktop/2019_architetturedati")
+#setwd("/Users/Davide Finati/Desktop/2019_architetturedati")
 
 library(readr)
 
@@ -19,12 +20,15 @@ print(paste("TABLE | Number of NA: ", totalNA, "| % of NA: ", round((totalNA/(nr
 #GRAFICI COMPARAZIONE
 apple <- dataset[dataset$Symbol == "aapl", ]
 
+apple$OpenPrice = as.character(apple$OpenPrice)
 hist(parse_number(apple$OpenPrice), main = "Distribuzione OpenPrice", xlab = "OpenPrice")
 plot(c(1:nrow(apple)), parse_number(apple$OpenPrice), type = "b", xlab = "N", ylab = "OpenPrice", main = "Grafico OpenPrice")
 
+apple$ClosePrice = as.character(apple$ClosePrice)
 hist(parse_number(apple$ClosePrice), main = "Distribuzione ClosePrice", xlab = "ClosePrice")
 plot(c(1:nrow(apple)), parse_number(apple$ClosePrice), type = "b", xlab = "N", ylab = "ClosePrice", main = "Grafico ClosePrice")
 
+apple$ChangePerc = as.character(apple$ChangePerc)
 hist(parse_number(apple$ChangePerc), main = "Distribuzione ChangePerc", xlab = "ChangePerc")
 plot(c(1:nrow(apple)), parse_number(apple$ChangePerc), type = "b", xlab = "N", ylab = "ChangePerc", main = "Grafico ChangePerc")
 
@@ -69,17 +73,21 @@ plot(c(1:nrow(apple)), parse_number(apple$EPS), type = "b", xlab = "N", ylab = "
 
 groundtruth <- read.csv("GroundTruth.csv", sep = ';', header = TRUE)
 
+groundtruth$MarketCap = as.character(groundtruth$MarketCap)
+dataset$MarketCap = as.character(dataset$MarketCap)
 #PRECISIONE COLONNA OPEN
 totalSame = 0
-for(i in c(1:nrow(groundtruth))){
-  for(j in c(1:nrow(dataset))){
-    if(groundtruth[i]$Symbol == dataset[j]$Symbol){
-      if(parse_number(groundtruth[i]$OpenPrice) == parse_number(dataset[j]$OpenPrice)){
-        totalSame = totalSame + 1
-      }
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$MarketCap))==F & is.null(parse_number(dataset[j,]$MarketCap))==F){
+        if(parse_number(groundtruth[i,]$MarketCap) == parse_number(dataset[j,]$MarketCap)){
+          totalSame = totalSame + 1
+        }
+      }  
     }
   }
 }
 
-print(paste("PRECISION OpenPrice: ", round((totalSame/nrow(dataset))*100, 2)))
+print(paste("PRECISION MarketCap: ", round((totalSame/nrow(dataset))*100, 2)))
 
