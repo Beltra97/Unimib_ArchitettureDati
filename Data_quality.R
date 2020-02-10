@@ -73,9 +73,190 @@ plot(c(1:nrow(apple)), parse_number(apple$EPS), type = "b", xlab = "N", ylab = "
 
 groundtruth <- read.csv("GroundTruth.csv", sep = ';', header = TRUE)
 
-groundtruth$MarketCap = as.character(groundtruth$MarketCap)
-dataset$MarketCap = as.character(dataset$MarketCap)
-#PRECISIONE COLONNA OPEN
+groundtruth$EPS <- as.character(groundtruth$EPS)
+dataset$EPS <- as.character(dataset$EPS)
+
+#PRECISIONE COLONNA OpenPrice
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$OpenPrice))==F & is.null(parse_number(dataset[j,]$OpenPrice))==F){
+        if(parse_number(groundtruth[i,]$OpenPrice) == parse_number(dataset[j,]$OpenPrice)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION OpenPrice: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISIONE COLONNA ClosePrice
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$ClosePrice))==F & is.null(parse_number(dataset[j,]$ClosePrice))==F){
+        if(parse_number(groundtruth[i,]$ClosePrice) == parse_number(dataset[j,]$ClosePrice)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION ClosePrice: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISIONE COLONNA ChangePerc
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$ChangePerc))==F & is.null(parse_number(dataset[j,]$ChangePerc))==F){
+        if(parse_number(groundtruth[i,]$ChangePerc) == parse_number(dataset[j,]$ChangePerc)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION ChangePerc: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISIONE COLONNA ChangeInDollars
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$ChangeInDollars))==F & is.null(parse_number(dataset[j,]$ChangeInDollars))==F){
+        if(parse_number(groundtruth[i,]$ChangeInDollars) == parse_number(dataset[j,]$ChangeInDollars)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION ChangeInDollars: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISIONE COLONNA Volume
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$Volume))==F & is.null(parse_number(dataset[j,]$Volume))==F){
+        if(parse_number(groundtruth[i,]$Volume) == parse_number(dataset[j,]$Volume)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION Volume: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISIONE COLONNA HighPrice
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$HighPrice))==F & is.null(parse_number(dataset[j,]$HighPrice))==F){
+        if(parse_number(groundtruth[i,]$HighPrice) == parse_number(dataset[j,]$HighPrice)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION HighPrice: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISIONE COLONNA LowPrice
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$LowPrice))==F & is.null(parse_number(dataset[j,]$LowPrice))==F){
+        if(parse_number(groundtruth[i,]$LowPrice) == parse_number(dataset[j,]$LowPrice)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION LowPrice: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISIONE COLONNA PreviousClose
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$PreviousClose))==F & is.null(parse_number(dataset[j,]$PreviousClose))==F){
+        if(parse_number(groundtruth[i,]$PreviousClose) == parse_number(dataset[j,]$PreviousClose)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION PreviousClose: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISIONE COLONNA YearHigh
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$YearHigh))==F & is.null(parse_number(dataset[j,]$YearHigh))==F){
+        if(parse_number(groundtruth[i,]$YearHigh) == parse_number(dataset[j,]$YearHigh)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION YearHigh: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISIONE COLONNA YearLow
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$YearLow))==F & is.null(parse_number(dataset[j,]$YearLow))==F){
+        if(parse_number(groundtruth[i,]$YearLow) == parse_number(dataset[j,]$YearLow)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION YearLow: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISIONE COLONNA NShares
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$NShares))==F & is.null(parse_number(dataset[j,]$NShares))==F){
+        if(parse_number(groundtruth[i,]$NShares) == parse_number(dataset[j,]$NShares)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION NShares: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISIONE COLONNA PE
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$PE))==F & is.null(parse_number(dataset[j,]$PE))==F){
+        if(parse_number(groundtruth[i,]$PE) == parse_number(dataset[j,]$PE)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION PE: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISIONE COLONNA MarketCap
 totalSame = 0
 for(i in 1:nrow(groundtruth)){
   for(j in 1:nrow(dataset)){
@@ -88,6 +269,88 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
+print(paste("PRECISION MarketCap: ", round((totalSame/nrow(dataset))*100, 2), "%"))
 
-print(paste("PRECISION MarketCap: ", round((totalSame/nrow(dataset))*100, 2)))
+#PRECISIONE COLONNA Yield
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$Yield))==F & is.null(parse_number(dataset[j,]$Yield))==F){
+        if(parse_number(groundtruth[i,]$Yield) == parse_number(dataset[j,]$Yield)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION Yield: ", round((totalSame/nrow(dataset))*100, 2), "%"))
 
+#PRECISIONE COLONNA DividendYield
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$DividendYield))==F & is.null(parse_number(dataset[j,]$DividendYield))==F){
+        if(parse_number(groundtruth[i,]$DividendYield) == parse_number(dataset[j,]$DividendYield)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION DividendYield: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISIONE COLONNA EPS
+totalSame = 0
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(dataset)){
+    if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
+      if(is.null(parse_number(groundtruth[i,]$EPS))==F & is.null(parse_number(dataset[j,]$EPS))==F){
+        if(parse_number(groundtruth[i,]$EPS) == parse_number(dataset[j,]$EPS)){
+          totalSame = totalSame + 1
+        }
+      }  
+    }
+  }
+}
+print(paste("PRECISION EPS: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+
+#REDUNDANCY OpenPrice,ClosePrice,HighPrice,LowPrice
+totalSame = 0
+for(i in c(1:nrow(dataset))){
+  if(i < nrow(dataset) && as.character(dataset[i,]$Symbol) == as.character(dataset[i+1,]$Symbol)){
+    if(parse_number(dataset[i,]$OpenPrice) == parse_number(dataset[i+1,]$OpenPrice) && 
+       parse_number(dataset[i,]$ClosePrice) == parse_number(dataset[i+1,]$ClosePrice) &&
+       parse_number(dataset[i,]$HighPrice) == parse_number(dataset[i+1,]$HighPrice) && 
+       parse_number(dataset[i,]$LowPrice) == parse_number(dataset[i+1,]$LowPrice)){
+      totalSame = totalSame + 1
+    }
+  }
+}
+print(paste("REDUNDANCY: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#REDUNDANCY OpenPrice,ClosePrice
+totalSame = 0
+for(i in c(1:nrow(dataset))){
+  if(i < nrow(dataset) && as.character(dataset[i,]$Symbol) == as.character(dataset[i+1,]$Symbol)){
+    if(parse_number(dataset[i,]$OpenPrice) == parse_number(dataset[i+1,]$OpenPrice) && 
+       parse_number(dataset[i,]$ClosePrice) == parse_number(dataset[i+1,]$ClosePrice)){
+      totalSame = totalSame + 1
+    }
+  }
+}
+print(paste("REDUNDANCY: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#REDUNDANCY HighPrice,LowPrice
+totalSame = 0
+for(i in c(1:nrow(dataset))){
+  if(i < nrow(dataset) && as.character(dataset[i,]$Symbol) == as.character(dataset[i+1,]$Symbol)){
+    if(parse_number(dataset[i,]$HighPrice) == parse_number(dataset[i+1,]$HighPrice) && 
+       parse_number(dataset[i,]$LowPrice) == parse_number(dataset[i+1,]$LowPrice)){
+      totalSame = totalSame + 1
+    }
+  }
+}
+print(paste("REDUNDANCY: ", round((totalSame/nrow(dataset))*100, 2), "%"))
