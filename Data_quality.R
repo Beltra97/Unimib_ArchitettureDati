@@ -4,7 +4,7 @@
 
 library(readr)
 
-dataset <- read.csv("Dataset.csv", stringsAsFactors = T, sep = ';', header = TRUE)
+dataset <- read.csv("Dataset.csv", stringsAsFactors = F, sep = ';', header = TRUE)
 
 #COMPLETEZZA (# DI NULL) PER OGNI COLONNA
 totalNA = 0
@@ -71,17 +71,14 @@ plot(c(1:nrow(apple)), parse_number(apple$DividendYield), type = "b", xlab = "N"
 hist(parse_number(apple$EPS), main = "Distribuzione EPS", xlab = "EPS")
 plot(c(1:nrow(apple)), parse_number(apple$EPS), type = "b", xlab = "N", ylab = "EPS", main = "Grafico EPS")
 
-groundtruth <- read.csv("GroundTruth.csv", sep = ';', header = TRUE)
-
-groundtruth$EPS <- as.character(groundtruth$EPS)
-dataset$EPS <- as.character(dataset$EPS)
+groundtruth <- read.csv("GroundTruth.csv", sep = ';', stringsAsFactors = F, header = TRUE)
 
 #PRECISIONE COLONNA OpenPrice
 totalSame = 0
 for(i in 1:nrow(groundtruth)){
   for(j in 1:nrow(dataset)){
     if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
-      if(is.null(parse_number(groundtruth[i,]$OpenPrice))==F & is.null(parse_number(dataset[j,]$OpenPrice))==F){
+      if(is.na(parse_number(groundtruth[i,]$OpenPrice))==F & is.na(parse_number(dataset[j,]$OpenPrice))==F){
         if(parse_number(groundtruth[i,]$OpenPrice) == parse_number(dataset[j,]$OpenPrice)){
           totalSame = totalSame + 1
         }
@@ -96,7 +93,7 @@ totalSame = 0
 for(i in 1:nrow(groundtruth)){
   for(j in 1:nrow(dataset)){
     if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
-      if(is.null(parse_number(groundtruth[i,]$ClosePrice))==F & is.null(parse_number(dataset[j,]$ClosePrice))==F){
+      if(is.na(parse_number(groundtruth[i,]$ClosePrice))==F & is.na(parse_number(dataset[j,]$ClosePrice))==F){
         if(parse_number(groundtruth[i,]$ClosePrice) == parse_number(dataset[j,]$ClosePrice)){
           totalSame = totalSame + 1
         }
@@ -126,8 +123,8 @@ totalSame = 0
 for(i in 1:nrow(groundtruth)){
   for(j in 1:nrow(dataset)){
     if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
-      if(is.null(parse_number(groundtruth[i,]$ChangeInDollars))==F & is.null(parse_number(dataset[j,]$ChangeInDollars))==F){
-        if(parse_number(groundtruth[i,]$ChangeInDollars) == parse_number(dataset[j,]$ChangeInDollars)){
+      if(is.na(groundtruth[i,]$ChangeInDollars)==F & is.na(dataset[j,]$ChangeInDollars)==F){
+        if(groundtruth[i,]$ChangeInDollars == dataset[j,]$ChangeInDollars){
           totalSame = totalSame + 1
         }
       }  
@@ -186,7 +183,7 @@ totalSame = 0
 for(i in 1:nrow(groundtruth)){
   for(j in 1:nrow(dataset)){
     if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
-      if(is.null(parse_number(groundtruth[i,]$PreviousClose))==F & is.null(parse_number(dataset[j,]$PreviousClose))==F){
+      if(is.na(parse_number(groundtruth[i,]$PreviousClose))==F & is.na(parse_number(dataset[j,]$PreviousClose))==F){
         if(parse_number(groundtruth[i,]$PreviousClose) == parse_number(dataset[j,]$PreviousClose)){
           totalSame = totalSame + 1
         }
@@ -231,7 +228,7 @@ totalSame = 0
 for(i in 1:nrow(groundtruth)){
   for(j in 1:nrow(dataset)){
     if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
-      if(is.null(parse_number(groundtruth[i,]$NShares))==F & is.null(parse_number(dataset[j,]$NShares))==F){
+      if(is.na(parse_number(groundtruth[i,]$NShares))==F & is.na(parse_number(dataset[j,]$NShares))==F){
         if(parse_number(groundtruth[i,]$NShares) == parse_number(dataset[j,]$NShares)){
           totalSame = totalSame + 1
         }
@@ -242,11 +239,13 @@ for(i in 1:nrow(groundtruth)){
 print(paste("PRECISION NShares: ", round((totalSame/nrow(dataset))*100, 2), "%"))
 
 #PRECISIONE COLONNA PE
+groundtruth$PE = as.character(groundtruth$PE)
+dataset$PE = as.character(dataset$PE)
 totalSame = 0
 for(i in 1:nrow(groundtruth)){
   for(j in 1:nrow(dataset)){
     if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
-      if(is.null(parse_number(groundtruth[i,]$PE))==F & is.null(parse_number(dataset[j,]$PE))==F){
+      if(is.na(parse_number(groundtruth[i,]$PE))==F & is.na(parse_number(dataset[j,]$PE))==F){
         if(parse_number(groundtruth[i,]$PE) == parse_number(dataset[j,]$PE)){
           totalSame = totalSame + 1
         }
@@ -276,8 +275,8 @@ totalSame = 0
 for(i in 1:nrow(groundtruth)){
   for(j in 1:nrow(dataset)){
     if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
-      if(is.null(parse_number(groundtruth[i,]$Yield))==F & is.null(parse_number(dataset[j,]$Yield))==F){
-        if(parse_number(groundtruth[i,]$Yield) == parse_number(dataset[j,]$Yield)){
+      if(is.na(groundtruth[i,]$Yield)==F & is.na(dataset[j,]$Yield)==F){
+        if(groundtruth[i,]$Yield == dataset[j,]$Yield){
           totalSame = totalSame + 1
         }
       }  
@@ -291,8 +290,8 @@ totalSame = 0
 for(i in 1:nrow(groundtruth)){
   for(j in 1:nrow(dataset)){
     if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
-      if(is.null(parse_number(groundtruth[i,]$DividendYield))==F & is.null(parse_number(dataset[j,]$DividendYield))==F){
-        if(parse_number(groundtruth[i,]$DividendYield) == parse_number(dataset[j,]$DividendYield)){
+      if(is.na(groundtruth[i,]$DividendYield)==F & is.na(dataset[j,]$DividendYield)==F){
+        if(groundtruth[i,]$DividendYield == dataset[j,]$DividendYield){
           totalSame = totalSame + 1
         }
       }  
@@ -306,8 +305,8 @@ totalSame = 0
 for(i in 1:nrow(groundtruth)){
   for(j in 1:nrow(dataset)){
     if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
-      if(is.null(parse_number(groundtruth[i,]$EPS))==F & is.null(parse_number(dataset[j,]$EPS))==F){
-        if(parse_number(groundtruth[i,]$EPS) == parse_number(dataset[j,]$EPS)){
+      if(is.na(groundtruth[i,]$EPS)==F & is.na(dataset[j,]$EPS)==F){
+        if(groundtruth[i,]$EPS == dataset[j,]$EPS){
           totalSame = totalSame + 1
         }
       }  
@@ -354,3 +353,21 @@ for(i in c(1:nrow(dataset))){
   }
 }
 print(paste("REDUNDANCY: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+
+#PRECISION FONTI
+totalSame = 0
+ds <- dataset[dataset$Source=="msn-money",]
+for(i in 1:nrow(groundtruth)){
+  for(j in 1:nrow(ds)){
+    if(groundtruth[i,]$Symbol == ds[j,]$Symbol){
+      if(parse_number(groundtruth[i,]$OpenPrice) == parse_number(ds[j,]$OpenPrice) && 
+         parse_number(groundtruth[i,]$ClosePrice) == parse_number(ds[j,]$ClosePrice)&&
+         parse_number(groundtruth[i,]$HighPrice) == parse_number(ds[j,]$HighPrice) && 
+         parse_number(groundtruth[i,]$LowPrice) == parse_number(ds[j,]$LowPrice)){
+        totalSame = totalSame + 1
+      }
+    }
+  }
+}
+print(paste("PRECISION BLOOMBERG: ", round((totalSame/nrow(ds))*100, 2), "%"))
+
