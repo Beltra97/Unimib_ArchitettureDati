@@ -1,10 +1,16 @@
 #PROGETTO ARCHITETTURA DATI 2019/2020
-#setwd("/Users/fabiobeltramelli/Desktop/2019_architetturedati")
+setwd("/Users/fabiobeltramelli/Desktop/2019_architetturedati")
 #setwd("/Users/Davide Finati/Desktop/2019_architetturedati")
 
 library(readr)
 
 dataset <- read.csv("Dataset.csv", stringsAsFactors = F, sep = ';', header = TRUE)
+
+myPrint <- function(metric, columnName, totalSame){
+  print(paste(metric, " ", columnName, ": ", round((totalSame/nrow(dataset))*100, 2), "%"))
+}
+
+#############################################################################################################
 
 #COMPLETEZZA (# DI NULL) PER OGNI COLONNA
 totalNA = 0
@@ -16,6 +22,7 @@ for (i in c(1:ncol(dataset))){
 #COMPLETEZZA (# DI NULL) TUTTO DATASET
 print(paste("TABLE | Number of NA: ", totalNA, "| % of NA: ", round((totalNA/(nrow(dataset)*ncol(dataset))*100), 2)))
 
+#############################################################################################################
 
 #GRAFICI COMPARAZIONE
 apple <- dataset[dataset$Symbol == "aapl", ]
@@ -73,6 +80,8 @@ plot(c(1:nrow(apple)), parse_number(apple$EPS), type = "b", xlab = "N", ylab = "
 
 groundtruth <- read.csv("GroundTruth.csv", sep = ';', stringsAsFactors = F, header = TRUE)
 
+#############################################################################################################
+
 #PRECISIONE COLONNA OpenPrice
 totalSame = 0
 for(i in 1:nrow(groundtruth)){
@@ -86,7 +95,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION OpenPrice: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "OpenPrice", totalSame)
 
 #PRECISIONE COLONNA ClosePrice
 totalSame = 0
@@ -101,7 +110,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION ClosePrice: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "ClosePrice", totalSame)
 
 #PRECISIONE COLONNA ChangePerc
 totalSame = 0
@@ -116,7 +125,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION ChangePerc: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "ChangePerc", totalSame)
 
 #PRECISIONE COLONNA ChangeInDollars
 totalSame = 0
@@ -131,7 +140,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION ChangeInDollars: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "ChangeInDollars", totalSame)
 
 #PRECISIONE COLONNA Volume
 totalSame = 0
@@ -146,7 +155,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION Volume: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "Volume", totalSame)
 
 #PRECISIONE COLONNA HighPrice
 totalSame = 0
@@ -161,7 +170,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION HighPrice: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "HighPrice", totalSame)
 
 #PRECISIONE COLONNA LowPrice
 totalSame = 0
@@ -176,7 +185,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION LowPrice: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "LowPrice", totalSame)
 
 #PRECISIONE COLONNA PreviousClose
 totalSame = 0
@@ -191,7 +200,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION PreviousClose: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "PreviousClose", totalSame)
 
 #PRECISIONE COLONNA YearHigh
 totalSame = 0
@@ -206,7 +215,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION YearHigh: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "YearHigh", totalSame)
 
 #PRECISIONE COLONNA YearLow
 totalSame = 0
@@ -221,7 +230,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION YearLow: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "YearLow", totalSame)
 
 #PRECISIONE COLONNA NShares
 totalSame = 0
@@ -236,7 +245,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION NShares: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "NShares", totalSame)
 
 #PRECISIONE COLONNA PE
 groundtruth$PE = as.character(groundtruth$PE)
@@ -253,7 +262,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION PE: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "PE", totalSame)
 
 #PRECISIONE COLONNA MarketCap
 totalSame = 0
@@ -268,7 +277,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION MarketCap: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "MarketCap", totalSame)
 
 #PRECISIONE COLONNA Yield
 totalSame = 0
@@ -283,7 +292,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION Yield: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "Yield", totalSame)
 
 #PRECISIONE COLONNA DividendYield
 totalSame = 0
@@ -298,7 +307,7 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION DividendYield: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "DividendYield", totalSame)
 
 #PRECISIONE COLONNA EPS
 totalSame = 0
@@ -313,8 +322,9 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION EPS: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Precision", "EPS", totalSame)
 
+#############################################################################################################
 
 #REDUNDANCY OpenPrice,ClosePrice,HighPrice,LowPrice
 totalSame = 0
@@ -328,7 +338,7 @@ for(i in c(1:nrow(dataset))){
     }
   }
 }
-print(paste("REDUNDANCY: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Redundancy", "OpenPrice,ClosePrice,HighPrice,LowPrice", totalSame)
 
 #REDUNDANCY OpenPrice,ClosePrice
 totalSame = 0
@@ -340,7 +350,7 @@ for(i in c(1:nrow(dataset))){
     }
   }
 }
-print(paste("REDUNDANCY: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Redundancy", "OpenPrice,ClosePrice", totalSame)
 
 #REDUNDANCY HighPrice,LowPrice
 totalSame = 0
@@ -352,7 +362,7 @@ for(i in c(1:nrow(dataset))){
     }
   }
 }
-print(paste("REDUNDANCY: ", round((totalSame/nrow(dataset))*100, 2), "%"))
+myPrint("Redundancy", "HighPrice,LowPrice", totalSame)
 
 #PRECISION FONTI
 totalSame = 0
@@ -369,5 +379,121 @@ for(i in 1:nrow(groundtruth)){
     }
   }
 }
-print(paste("PRECISION BLOOMBERG: ", round((totalSame/nrow(ds))*100, 2), "%"))
+myPrint("Precision Bloomberg", "OpenPrice,ClosePrice,HighPrice,LowPrice", totalSame)
+
+#############################################################################################################
+
+#CONSISTENZA (HighPrice > LowPrice)
+totalInconsistent = 0
+for(i in 1:nrow(dataset)){
+  
+  isInconsistent = F
+  
+  #Consistency OpenPrice > 0
+  if(parse_number(dataset[i,]$OpenPrice) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR OpenPrice < 0"))
+    isInconsistent = T
+  }
+  
+  #Consistency ClosePrice > 0
+  if(parse_number(dataset[i,]$ClosePrice) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR ClosePrice < 0"))
+    isInconsistent = T
+  }
+  
+  #Consistency Volume > 0
+  if(parse_number(dataset[i,]$Volume) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR Volume < 0"))
+    isInconsistent = T
+  }
+  
+  #Consistency HighPrice > 0
+  if(parse_number(dataset[i,]$HighPrice) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR HighPrice < 0"))
+    isInconsistent = T
+  }
+  
+  #Consistency LowPrice > 0
+  if(parse_number(dataset[i,]$LowPrice) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR LowPrice < 0"))
+    isInconsistent = T
+  }
+  
+  #Consistency PreviousClose > 0
+  if(dataset[i,]$PreviousClose != "" & parse_number(dataset[i,]$PreviousClose) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR PreviousClose < 0"))
+    isInconsistent = T
+  }
+  
+  #Consistency YearHigh > 0
+  if(parse_number(dataset[i,]$YearHigh) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR YearHigh < 0"))
+    isInconsistent = T
+  }
+  
+  #Consistency YearLow > 0
+  if(parse_number(dataset[i,]$YearLow) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR YearLow < 0"))
+    isInconsistent = T
+  }
+  
+  #Consistency NShares > 0
+  if(dataset[i,]$NShares != "" & parse_number(dataset[i,]$NShares) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR NShares < 0"))
+    isInconsistent = T
+  }
+  
+  #DOMANDA ???? 
+  #Consistency PE > 0
+  if(dataset[i,]$PE != "" & parse_number(dataset[i,]$PE) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR PE < 0"))
+    isInconsistent = T
+  }
+  
+  #Consistency MarketCap > 0
+  if(dataset[i,]$MarketCap != "" & parse_number(dataset[i,]$MarketCap) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR MarketCap < 0"))
+    isInconsistent = T
+  }
+  
+  #DOMANDA ????
+  #Consistency EPS > 0
+  if(dataset[i,]$EPS != "" && parse_number(dataset[i,]$EPS) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR EPS < 0"))
+    isInconsistent = T
+  }
+  
+  #Consistency HighPrice > LowPrice
+  if(parse_number(dataset[i,]$HighPrice) < parse_number(dataset[i,]$LowPrice)){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR HighPrice < LowPrice"))
+    isInconsistent = T
+  }
+  
+  #Consistency YearHigh > YearLow
+  if(parse_number(dataset[i,]$YearHigh) < parse_number(dataset[i,]$YearLow)){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR YearHigh < YearLow"))
+    isInconsistent = T
+  }
+  
+  #Consistency PreviousClose = OpenPrice
+  if(dataset[i,]$PreviousClose != "" && parse_number(dataset[i,]$OpenPrice) != ""){
+    if(parse_number(dataset[i,]$PreviousClose) != parse_number(dataset[i,]$OpenPrice)){
+      print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol,"ERROR PreviousClose != OpenPrice"))
+      isInconsistent = T
+    }
+  }
+  
+  #Consistency MarketCap = NShares * HighPrice
+  if(dataset[i,]$MarketCap != "" & dataset[i,]$NShares != ""){
+    if(parse_number(dataset[i,]$MarketCap) != (parse_number(dataset[i,]$NShares) * parse_number(dataset[i,]$ClosePrice))){
+      print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol,"ERROR MarketCap != NShares * ClosePrice"))
+      isInconsistent = T
+    }
+  }
+  
+  if(isInconsistent)
+    totalInconsistent = totalInconsistent + 1
+    
+}
+myPrint("Inconstency", "Row", totalInconsistent)
 
