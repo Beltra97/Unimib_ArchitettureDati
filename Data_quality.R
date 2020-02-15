@@ -5,80 +5,40 @@ setwd("/Users/Davide Finati/Desktop/2019_architetturedati")
 library(readr)
 
 dataset <- read.csv("Dataset.csv", stringsAsFactors = F, sep = ';', header = TRUE)
+datasetCleaned <- read.csv("DatasetPostCleaning.csv", stringsAsFactors = F, sep = ',', header = TRUE)
+
+groundtruth <- read.csv("GroundTruth.csv", sep = ';', stringsAsFactors = F, header = TRUE)
 
 myPrint <- function(metric, columnName, totalSame){
   print(paste(metric, " ", columnName, ": ", round((totalSame/nrow(dataset))*100, 2), "%"))
 }
 
+myMode <- function(v) {
+  uniqv <- unique(v)
+  uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
 #############################################################################################################
 
-#COMPLETEZZA (# DI NULL) PER OGNI COLONNA
+#COMPLETEZZA (# DI NULL) PER OGNI COLONNA (DATASET PRECLEANING)
 totalNA = 0
 for (i in c(1:ncol(dataset))){
   totalNA = totalNA + sum(dataset[i] == "")
   print(paste(colnames(dataset[i]), "| Number of NA: ", sum(dataset[i] == ""), "| % of NA: ", sum(dataset[i] == "")/nrow(dataset)*100))
 }
-
 #COMPLETEZZA (# DI NULL) TUTTO DATASET
 print(paste("TABLE | Number of NA: ", totalNA, "| % of NA: ", round((totalNA/(nrow(dataset)*ncol(dataset))*100), 2)))
 
-#############################################################################################################
 
-#GRAFICI COMPARAZIONE
-apple <- dataset[dataset$Symbol == "aapl", ]
+#COMPLETEZZA (# DI NULL) PER OGNI COLONNA (DATASET POSTCLEANING)
+totalNA = 0
+for (i in c(1:ncol(datasetCleaned))){
+  totalNA = totalNA + sum(is.na(datasetCleaned[i]))
+  print(paste(colnames(datasetCleaned[i]), "| Number of NA: ", sum(is.na(datasetCleaned[i])), "| % of NA: ", sum(is.na(datasetCleaned[i]))/nrow(datasetCleaned)*100))
+}
+#COMPLETEZZA (# DI NULL) TUTTO DATASET
+print(paste("TABLE | Number of NA: ", totalNA, "| % of NA: ", round((totalNA/(nrow(datasetCleaned)*ncol(datasetCleaned))*100), 2)))
 
-apple$OpenPrice = as.character(apple$OpenPrice)
-hist(parse_number(apple$OpenPrice), main = "Distribuzione OpenPrice", xlab = "OpenPrice")
-plot(c(1:nrow(apple)), parse_number(apple$OpenPrice), type = "b", xlab = "N", ylab = "OpenPrice", main = "Grafico OpenPrice")
-
-apple$ClosePrice = as.character(apple$ClosePrice)
-hist(parse_number(apple$ClosePrice), main = "Distribuzione ClosePrice", xlab = "ClosePrice")
-plot(c(1:nrow(apple)), parse_number(apple$ClosePrice), type = "b", xlab = "N", ylab = "ClosePrice", main = "Grafico ClosePrice")
-
-apple$ChangePerc = as.character(apple$ChangePerc)
-hist(parse_number(apple$ChangePerc), main = "Distribuzione ChangePerc", xlab = "ChangePerc")
-plot(c(1:nrow(apple)), parse_number(apple$ChangePerc), type = "b", xlab = "N", ylab = "ChangePerc", main = "Grafico ChangePerc")
-
-hist(parse_number(apple$ChangeInDollars), main = "Distribuzione ChangeInDollars", xlab = "ChangeInDollars")
-plot(c(1:nrow(apple)), parse_number(apple$ChangeInDollars), type = "b", xlab = "N", ylab = "ChangeInDollars", main = "Grafico ChangeInDollars")
-
-hist(parse_number(apple$Volume), main = "Distribuzione Volume", xlab = "Volume")
-plot(c(1:nrow(apple)), parse_number(apple$Volume), type = "b", xlab = "N", ylab = "Volume", main = "Grafico Volume")
-
-hist(parse_number(apple$HighPrice), main = "Distribuzione HighPrice", xlab = "HighPrice")
-plot(c(1:nrow(apple)), parse_number(apple$HighPrice), type = "b", xlab = "N", ylab = "HighPrice", main = "Grafico HighPrice")
-
-hist(parse_number(apple$LowPrice), main = "Distribuzione LowPrice", xlab = "LowPrice")
-plot(c(1:nrow(apple)), parse_number(apple$LowPrice), type = "b", xlab = "N", ylab = "LowPrice", main = "Grafico LowPrice")
-
-hist(parse_number(apple$PreviousClose), main = "Distribuzione PreviousClose", xlab = "PreviousClose")
-plot(c(1:nrow(apple)), parse_number(apple$PreviousClose), type = "b", xlab = "N", ylab = "PreviousClose", main = "Grafico PreviousClose")
-
-hist(parse_number(apple$YearHigh), main = "Distribuzione YearHigh", xlab = "YearHigh")
-plot(c(1:nrow(apple)), parse_number(apple$YearHigh), type = "b", xlab = "N", ylab = "YearHigh", main = "Grafico YearHigh")
-
-hist(parse_number(apple$YearLow), main = "Distribuzione YearLow", xlab = "YearLow")
-plot(c(1:nrow(apple)), parse_number(apple$YearLow), type = "b", xlab = "N", ylab = "YearLow", main = "Grafico YearLow")
-
-hist(parse_number(apple$NShares), main = "Distribuzione NShares", xlab = "NShares")
-plot(c(1:nrow(apple)), parse_number(apple$NShares), type = "b", xlab = "N", ylab = "NShares", main = "Grafico NShares")
-
-hist(parse_number(apple$PE), main = "Distribuzione PE", xlab = "PE")
-plot(c(1:nrow(apple)), parse_number(apple$PE), type = "b", xlab = "N", ylab = "PE", main = "Grafico PE")
-
-hist(parse_number(apple$MarketCap), main = "Distribuzione MarketCap", xlab = "MarketCap")
-plot(c(1:nrow(apple)), parse_number(apple$MarketCap), type = "b", xlab = "N", ylab = "MarketCap", main = "Grafico MarketCap")
-
-hist(parse_number(apple$Yield), main = "Distribuzione Yield", xlab = "Yield")
-plot(c(1:nrow(apple)), parse_number(apple$Yield), type = "b", xlab = "N", ylab = "Yield", main = "Grafico Yield")
-
-hist(parse_number(apple$DividendYield), main = "Distribuzione DividendYield", xlab = "DividendYield")
-plot(c(1:nrow(apple)), parse_number(apple$DividendYield), type = "b", xlab = "N", ylab = "DividendYield", main = "Grafico DividendYield")
-
-hist(parse_number(apple$EPS), main = "Distribuzione EPS", xlab = "EPS")
-plot(c(1:nrow(apple)), parse_number(apple$EPS), type = "b", xlab = "N", ylab = "EPS", main = "Grafico EPS")
-
-groundtruth <- read.csv("GroundTruth.csv", sep = ';', stringsAsFactors = F, header = TRUE)
 
 #############################################################################################################
 
@@ -366,7 +326,7 @@ myPrint("Redundancy", "HighPrice,LowPrice", totalSame)
 
 #PRECISION FONTI
 totalSame = 0
-ds <- dataset[dataset$Source=="msn-money",]
+ds <- dataset[dataset$Source=="yahoo-finance",]
 for(i in 1:nrow(groundtruth)){
   for(j in 1:nrow(ds)){
     if(groundtruth[i,]$Symbol == ds[j,]$Symbol){
@@ -384,105 +344,163 @@ myPrint("Precision Bloomberg", "OpenPrice,ClosePrice,HighPrice,LowPrice", totalS
 #############################################################################################################
 
 #CONSISTENZA
-totalInconsistent = 0
-totalWarning = 0
+openPriceInconsistent = 0
+closePriceInconsistent = 0
+highPriceInconsistent = 0
+lowPriceInconsistent = 0
+yearHighInconsistent = 0
+yearLowInconsistent = 0
+volumeInconsistent = 0
+previousCloseInconsistent = 0
+nSharesInconsistent = 0
+peIncosistent = 0
+marketCapInconsistent = 0
+yieldInconsistent = 0
+dividendYieldInconsistent = 0
+highPriceLowPriceIncosistent = 0
+highPriceOpenPriceIncosistent = 0
+highPriceClosePriceIncosistent = 0
+lowPriceOpenPriceIncosistent = 0
+lowPriceClosePriceIncosistent = 0
+yearHighYearLowIncosistent = 0
+previousCloseYearHighIncosistent = 0
+previousCloseYearLowIncosistent = 0
+marketCapNSharesClosePriceIncosistent = 0
+previousCloseOpenPriceIncosistent = 0
+
 for(i in 1:nrow(dataset)){
-  
-  isInconsistent = F
-  isWarning = F
   
   #Consistency OpenPrice > 0
   if(parse_number(dataset[i,]$OpenPrice) < 0){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR OpenPrice < 0"))
-    isInconsistent = T
+    openPriceInconsistent = openPriceInconsistent + 1
   }
   
   #Consistency ClosePrice > 0
   if(parse_number(dataset[i,]$ClosePrice) < 0){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR ClosePrice < 0"))
-    isInconsistent = T
+    closePriceInconsistent = closePriceInconsistent + 1
   }
   
   #Consistency Volume > 0
   if(parse_number(dataset[i,]$Volume) < 0){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR Volume < 0"))
-    isInconsistent = T
+    volumeInconsistent = volumeInconsistent + 1
   }
   
   #Consistency HighPrice > 0
   if(parse_number(dataset[i,]$HighPrice) < 0){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR HighPrice < 0"))
-    isInconsistent = T
+    highPriceInconsistent = highPriceInconsistent + 1
   }
   
   #Consistency LowPrice > 0
   if(parse_number(dataset[i,]$LowPrice) < 0){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR LowPrice < 0"))
-    isInconsistent = T
+    lowPriceInconsistent = lowPriceInconsistent + 1
   }
   
   #Consistency PreviousClose > 0
   if(dataset[i,]$PreviousClose != "" & parse_number(dataset[i,]$PreviousClose) < 0){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR PreviousClose < 0"))
-    isInconsistent = T
+    previousCloseInconsistent = previousCloseInconsistent + 1
   }
   
   #Consistency YearHigh > 0
   if(parse_number(dataset[i,]$YearHigh) < 0){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR YearHigh < 0"))
-    isInconsistent = T
+    yearHighInconsistent = yearHighInconsistent + 1
   }
   
   #Consistency YearLow > 0
   if(parse_number(dataset[i,]$YearLow) < 0){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR YearLow < 0"))
-    isInconsistent = T
+    yearLowInconsistent = yearLowInconsistent + 1
   }
   
   #Consistency NShares > 0
   if(dataset[i,]$NShares != "" & parse_number(dataset[i,]$NShares) < 0){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR NShares < 0"))
-    isInconsistent = T
+    nSharesInconsistent = nSharesInconsistent + 1
   }
   
-  #DOMANDA ???? 
+  #WARNING
   #Consistency PE > 0
   if(dataset[i,]$PE != "" & parse_number(dataset[i,]$PE) < 0){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR PE < 0"))
-    isInconsistent = T
+    peIncosistent = peIncosistent + 1
   }
   
   #Consistency MarketCap > 0
   if(dataset[i,]$MarketCap != "" & parse_number(dataset[i,]$MarketCap) < 0){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR MarketCap < 0"))
-    isInconsistent = T
+    marketCapInconsistent = marketCapInconsistent + 1
   }
   
-  #DOMANDA ????
-  #Consistency EPS > 0
-  if(dataset[i,]$EPS != "" && parse_number(dataset[i,]$EPS) < 0){
-    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR EPS < 0"))
-    isInconsistent = T
+  #Consistency Yield > 0
+  if(!is.na(dataset[i,]$Yield) && dataset[i,]$Yield != "" & parse_number(dataset[i,]$Yield) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR Yield < 0"))
+    yieldInconsistent = yieldInconsistent + 1
   }
   
   #Consistency HighPrice > LowPrice
   if(parse_number(dataset[i,]$HighPrice) < parse_number(dataset[i,]$LowPrice)){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR HighPrice < LowPrice"))
-    isInconsistent = T
+    highPriceLowPriceIncosistent = highPriceLowPriceIncosistent + 1
+  }
+  
+  #Consistency HighPrice >= OpenPrice
+  if(parse_number(dataset[i,]$HighPrice) < parse_number(dataset[i,]$OpenPrice)){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR HighPrice < OpenPrice"))
+    highPriceOpenPriceIncosistent = highPriceOpenPriceIncosistent + 1
+  }
+  
+  #Consistency HighPrice >= ClosePrice
+  if(parse_number(dataset[i,]$HighPrice) < parse_number(dataset[i,]$ClosePrice)){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR HighPrice < ClosePrice"))
+    highPriceClosePriceIncosistent = highPriceClosePriceIncosistent + 1
+  }
+  
+  #Consistency LowPrice <= OpenPrice
+  if(parse_number(dataset[i,]$LowPrice) > parse_number(dataset[i,]$OpenPrice)){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR LowPrice < OpenPrice"))
+    lowPriceOpenPriceIncosistent = lowPriceOpenPriceIncosistent + 1
+  }
+  
+  #Consistency LowPrice <= ClosePrice
+  if(parse_number(dataset[i,]$LowPrice) > parse_number(dataset[i,]$ClosePrice)){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR LowPrice < ClosePrice"))
+    lowPriceClosePriceIncosistent = lowPriceClosePriceIncosistent + 1
   }
   
   #Consistency YearHigh > YearLow
   if(parse_number(dataset[i,]$YearHigh) < parse_number(dataset[i,]$YearLow)){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR YearHigh < YearLow"))
-    isInconsistent = T
+    yearHighYearLowIncosistent = yearHighYearLowIncosistent + 1
   }
   
+  #WARNING
   #Consistency PreviousClose = OpenPrice
   if(dataset[i,]$PreviousClose != "" && parse_number(dataset[i,]$OpenPrice) != ""){
     if(parse_number(dataset[i,]$PreviousClose) != parse_number(dataset[i,]$OpenPrice)){
-      print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol,"ERROR PreviousClose != OpenPrice"))
-      isInconsistent = F
-      isWarning = T
+      print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol,"WARNING PreviousClose != OpenPrice"))
+      previousCloseOpenPriceIncosistent = previousCloseOpenPriceIncosistent + 1
+    }
+  }
+  
+  #Consistency PreviousClose <= YearHigh
+  if(dataset[i,]$PreviousClose != ""){
+    if(parse_number(dataset[i,]$PreviousClose) > parse_number(dataset[i,]$YearHigh)){
+      print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol,"ERRORE PreviousClose > YearHigh"))
+      previousCloseYearHighIncosistent = previousCloseYearHighIncosistent + 1
+    }
+  }
+  
+  #Consistency PreviousClose >= YearLow
+  if(dataset[i,]$PreviousClose != ""){
+    if(parse_number(dataset[i,]$PreviousClose) < parse_number(dataset[i,]$YearLow)){
+      print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol,"ERRORE PreviousClose < YearLow"))
+      previousCloseYearLowIncosistent = previousCloseYearLowIncosistent + 1
     }
   }
   
@@ -490,32 +508,122 @@ for(i in 1:nrow(dataset)){
   if(dataset[i,]$MarketCap != "" & dataset[i,]$NShares != ""){
     if(parse_number(dataset[i,]$MarketCap) != (parse_number(dataset[i,]$NShares) * parse_number(dataset[i,]$ClosePrice))){
       print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol,"ERROR MarketCap != NShares * ClosePrice"))
-      isInconsistent = T
+      marketCapNSharesClosePriceIncosistent = marketCapNSharesClosePriceIncosistent + 1
     }
   }
-  
-  if(isInconsistent)
-    totalInconsistent = totalInconsistent + 1
-  
-  if(isWarning)
-    totalWarning = totalWarning + 1
-    
-}
-myPrint("Inconstency", "Row", totalInconsistent)
-myPrint("Inconstency", "Row", totalWarning)
-
-getmode <- function(v) {
-  uniqv <- unique(v)
-  uniqv[which.max(tabulate(match(v, uniqv)))]
 }
 
-########
+myPrint("Inconstency", "OpenPrice < 0", openPriceInconsistent)
+myPrint("Inconstency", "ClosePrice < 0", closePriceInconsistent)
+myPrint("Inconstency", "HighPrice < 0", highPriceInconsistent)
+myPrint("Inconstency", "LowPrice < 0", lowPriceInconsistent)
+myPrint("Inconstency", "YearHigh < 0", yearHighInconsistent)
+myPrint("Inconstency", "YearLow < 0", yearLowInconsistent)
+myPrint("Inconstency", "Volume < 0", volumeInconsistent)
+myPrint("Inconstency", "PreviousClose < 0", previousCloseInconsistent)
+myPrint("Inconstency", "NShares < 0", nSharesInconsistent)
+myPrint("Inconstency", "MarketCap < 0", marketCapInconsistent)
+myPrint("Inconstency", "Yield < 0", yieldInconsistent)
+
+myPrint("Inconstency", "HighPrice < LowPrice", highPriceLowPriceIncosistent)
+myPrint("Inconstency", "HighPrice < OpenPrice", highPriceOpenPriceIncosistent)
+myPrint("Inconstency", "HighPrice < ClosePrice", highPriceClosePriceIncosistent)
+
+myPrint("Inconstency", "LowPrice > OpenPrice", lowPriceOpenPriceIncosistent)
+myPrint("Inconstency", "LowPrice > ClosePrice", lowPriceClosePriceIncosistent)
+
+myPrint("Inconstency", "YearHigh < YearLow", yearHighYearLowIncosistent)
+myPrint("Inconstency", "PreviousClose > YearHigh", previousCloseYearHighIncosistent)
+myPrint("Inconstency", "PreviousClose < YearLow", previousCloseYearLowIncosistent)
+
+myPrint("Inconstency", "MarketCap != NShares * ClosePrice", marketCapNSharesClosePriceIncosistent)
+
+myPrint("Warning", "PE < 0", peIncosistent)
+myPrint("Warning", "PreviousClose != OpenClose", previousCloseOpenPriceIncosistent)
+
+####################################################################################################
+
+#DATA CLEANING NULL
+
+dataset <- read.csv("Dataset.csv", stringsAsFactors = F, sep = ';', header = TRUE)
+
 for(i in 1:nrow(dataset)){
+
   if(dataset[i,]$PreviousClose == ""){
     other <- dataset[dataset$Symbol == dataset[i,]$Symbol, ]$PreviousClose
     other <- parse_number(other[other != ""])
-    dataset[i,]$PreviousClose <- getmode(other)
-    #print(mean(dataset[dataset$Symbol == dataset[i,]$Symbol, ]$PreviousClose))
+    dataset[i,]$PreviousClose <- myMode(other)
   }
+  
+  if(dataset[i,]$NShares == ""){
+    other <- dataset[dataset$Symbol == dataset[i,]$Symbol, ]$NShares
+    other <- parse_number(other[other != ""])
+    dataset[i,]$NShares <- myMode(other)
+  }
+  
+  if(dataset[i,]$Yield == ""){
+    other <- dataset[dataset$Symbol == dataset[i,]$Symbol, ]$Yield
+    other <- parse_number(other[other != ""])
+    dataset[i,]$Yield <- myMode(other)
+  }
+  
+  if(dataset[i,]$DividendYield == ""){
+    other <- dataset[dataset$Symbol == dataset[i,]$Symbol, ]$DividendYield
+    other <- parse_number(other[other != ""])
+    dataset[i,]$DividendYield <- myMode(other)
+  }
+  
+  dataset[i,]$OpenPrice = parse_number(dataset[i,]$OpenPrice)
+  dataset[i,]$ClosePrice = parse_number(dataset[i,]$ClosePrice)
+  
+  dataset[i,]$HighPrice = parse_number(dataset[i,]$HighPrice)
+  dataset[i,]$LowPrice = parse_number(dataset[i,]$LowPrice)
+  
+  if(abs(parse_number(dataset[i,]$ChangeInDollars)) > 10)
+    dataset[i,]$ChangeInDollars = parse_number(dataset[i,]$ChangeInDollars) / 1000
+  else
+    dataset[i,]$ChangeInDollars = parse_number(dataset[i,]$ChangeInDollars)
+  
+  dataset[i,]$ChangePerc = parse_number(dataset[i,]$ChangePerc)
+  
+  dataset[i,]$YearHigh = parse_number(dataset[i,]$YearHigh)
+  dataset[i,]$YearLow = parse_number(dataset[i,]$YearLow)
+  
+  #Volume => mil,m = 1000000
+  if(grepl("mil",dataset[i,]$Volume, fixed = TRUE) || grepl("m",dataset[i,]$Volume, fixed = TRUE))
+    dataset[i,]$Volume = parse_number(dataset[i,]$Volume) * 1000000
+  else
+    dataset[i,]$Volume = parse_number(dataset[i,]$Volume)
+  
+  #NShares => mil,m = 1000000
+  if(grepl("mil",dataset[i,]$NShares, fixed = TRUE) || grepl("m",dataset[i,]$NShares, fixed = TRUE))
+    dataset[i,]$NShares = parse_number(dataset[i,]$NShares) * 1000000
+  #NShares => bil,b = 1000000000
+  else if(grepl("bil",dataset[i,]$NShares, fixed = TRUE) || grepl("b",dataset[i,]$NShares, fixed = TRUE))
+    dataset[i,]$NShares = parse_number(dataset[i,]$NShares) * 1000000000
+  else
+    dataset[i,]$NShares = parse_number(dataset[i,]$NShares)
+  
+  dataset[i,]$PreviousClose = parse_number(dataset[i,]$PreviousClose)
+  
+  #MarketCap => mil,m = 1000000
+  if(grepl("mil",dataset[i,]$MarketCap, fixed = TRUE) || grepl("m",dataset[i,]$MarketCap, fixed = TRUE))
+    dataset[i,]$MarketCap = parse_number(dataset[i,]$MarketCap) * 1000000
+  #MarketCap => bil,b = 1000000000
+  else if(grepl("bil",dataset[i,]$MarketCap, fixed = TRUE) || grepl("b",dataset[i,]$MarketCap, fixed = TRUE))
+    dataset[i,]$MarketCap = parse_number(dataset[i,]$MarketCap) * 1000000000
+  else
+    dataset[i,]$MarketCap = parse_number(dataset[i,]$MarketCap) 
+  
+  if(!is.na(dataset[i,]$Yield))
+    dataset[i,]$Yield = parse_number(dataset[i,]$Yield)
+  if(!is.na(dataset[i,]$DividendYield))
+    dataset[i,]$DividendYield = parse_number(dataset[i,]$DividendYield)
+  
+  dataset[i,]$PE = parse_number(dataset[i,]$PE)
+  
+  dataset[i,]$EPS = parse_number(dataset[i,]$EPS)
 }
+
+write.csv(dataset, "DatasetPostCleaning.csv")
 
