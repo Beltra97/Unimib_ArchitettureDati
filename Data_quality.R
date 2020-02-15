@@ -383,7 +383,7 @@ myPrint("Precision Bloomberg", "OpenPrice,ClosePrice,HighPrice,LowPrice", totalS
 
 #############################################################################################################
 
-#CONSISTENZA (HighPrice > LowPrice)
+#CONSISTENZA
 totalInconsistent = 0
 totalWarning = 0
 for(i in 1:nrow(dataset)){
@@ -503,4 +503,19 @@ for(i in 1:nrow(dataset)){
 }
 myPrint("Inconstency", "Row", totalInconsistent)
 myPrint("Inconstency", "Row", totalWarning)
+
+getmode <- function(v) {
+  uniqv <- unique(v)
+  uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
+########
+for(i in 1:nrow(dataset)){
+  if(dataset[i,]$PreviousClose == ""){
+    other <- dataset[dataset$Symbol == dataset[i,]$Symbol, ]$PreviousClose
+    other <- parse_number(other[other != ""])
+    dataset[i,]$PreviousClose <- getmode(other)
+    #print(mean(dataset[dataset$Symbol == dataset[i,]$Symbol, ]$PreviousClose))
+  }
+}
 
