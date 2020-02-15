@@ -63,6 +63,8 @@ Inconsistenza LowPrice >= ClosePrice;0%;0%
 Inconsistenza YearHigh <= YearLow;0%;0%
 Inconsistenza PreviousClose >= YearHigh;0%;0%
 Inconsistenza PreviousClose <= YearLow;0%;0%
+Inconsistenza ChangeInDollars != ClosePrice - PreviousClose;58,4%;45%
+Inconsistenza ChangePerc != (ChangeInDollars/PreviousClose) * 100;59,4%;45%
 Inconsistenza MarketCap != NShares * ClosePrice;64,4%;38%
 ;;
 Casi particolari PE < 0;0,8%;0,2%

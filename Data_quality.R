@@ -343,7 +343,11 @@ myPrint("Precision Bloomberg", "OpenPrice,ClosePrice,HighPrice,LowPrice", totalS
 
 #############################################################################################################
 
+dataset <- read.csv("Dataset.csv", stringsAsFactors = F, sep = ';', header = TRUE)
+
 #CONSISTENZA
+changePercIncosistent = 0
+changeInDollarsIncosistent = 0
 openPriceInconsistent = 0
 closePriceInconsistent = 0
 highPriceInconsistent = 0
@@ -504,6 +508,25 @@ for(i in 1:nrow(dataset)){
     }
   }
   
+  #Consistency ChangeInDollars = ClosePrice - PreviousClose
+  if(dataset[i,]$PreviousClose != ""){
+    if(parse_number(dataset[i,]$ChangeInDollars) > 100 && dataset[i,]$Source == "bloomberg")
+      dataset[i,]$ChangeInDollars = dataset[i,]$ChangeInDollars/1000
+    
+    if(parse_number(dataset[i,]$ChangeInDollars) != (parse_number(dataset[i,]$ClosePrice) - parse_number(dataset[i,]$PreviousClose))){
+      print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol,"ERRORE ChangeInDollars != ClosePrice - PreviousClose"))
+      changeInDollarsIncosistent = changeInDollarsIncosistent + 1
+    }
+  }
+  
+  #Consistency ChangePerc = ChangeInDollars/PreviousClose * 100
+  if(dataset[i,]$PreviousClose != ""){
+    if(parse_number(dataset[i,]$ChangePerc) != (parse_number(dataset[i,]$ChangeInDollars)/parse_number(dataset[i,]$PreviousClose)) * 100){
+      print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol,"ERRORE ChangePerc != ChangeInDollars/PreviousClose * 100"))
+      changePercIncosistent = changePercIncosistent + 1
+    }
+  }
+  
   #Consistency MarketCap = NShares * HighPrice
   if(dataset[i,]$MarketCap != "" & dataset[i,]$NShares != ""){
     if(parse_number(dataset[i,]$MarketCap) != (parse_number(dataset[i,]$NShares) * parse_number(dataset[i,]$ClosePrice))){
@@ -535,6 +558,9 @@ myPrint("Inconstency", "LowPrice > ClosePrice", lowPriceClosePriceIncosistent)
 myPrint("Inconstency", "YearHigh < YearLow", yearHighYearLowIncosistent)
 myPrint("Inconstency", "PreviousClose > YearHigh", previousCloseYearHighIncosistent)
 myPrint("Inconstency", "PreviousClose < YearLow", previousCloseYearLowIncosistent)
+
+myPrint("Inconstency", "ChangeInDollars != ClosePrice - PreviousClose", changeInDollarsIncosistent)
+myPrint("Inconstency", "ChangePerc != ChangeInDollars/PreviousClose * 100", changePercIncosistent)
 
 myPrint("Inconstency", "MarketCap != NShares * ClosePrice", marketCapNSharesClosePriceIncosistent)
 
