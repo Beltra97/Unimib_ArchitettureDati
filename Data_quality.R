@@ -1,6 +1,6 @@
 #PROGETTO ARCHITETTURA DATI 2019/2020
 setwd("/Users/fabiobeltramelli/Desktop/2019_architetturedati")
-#setwd("/Users/Davide Finati/Desktop/2019_architetturedati")
+setwd("/Users/Davide Finati/Desktop/2019_architetturedati")
 
 library(readr)
 
@@ -385,9 +385,11 @@ myPrint("Precision Bloomberg", "OpenPrice,ClosePrice,HighPrice,LowPrice", totalS
 
 #CONSISTENZA (HighPrice > LowPrice)
 totalInconsistent = 0
+totalWarning = 0
 for(i in 1:nrow(dataset)){
   
   isInconsistent = F
+  isWarning = F
   
   #Consistency OpenPrice > 0
   if(parse_number(dataset[i,]$OpenPrice) < 0){
@@ -479,7 +481,8 @@ for(i in 1:nrow(dataset)){
   if(dataset[i,]$PreviousClose != "" && parse_number(dataset[i,]$OpenPrice) != ""){
     if(parse_number(dataset[i,]$PreviousClose) != parse_number(dataset[i,]$OpenPrice)){
       print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol,"ERROR PreviousClose != OpenPrice"))
-      isInconsistent = T
+      isInconsistent = F
+      isWarning = T
     }
   }
   
@@ -493,7 +496,11 @@ for(i in 1:nrow(dataset)){
   
   if(isInconsistent)
     totalInconsistent = totalInconsistent + 1
+  
+  if(isWarning)
+    totalWarning = totalWarning + 1
     
 }
 myPrint("Inconstency", "Row", totalInconsistent)
+myPrint("Inconstency", "Row", totalWarning)
 
