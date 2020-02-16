@@ -239,20 +239,20 @@ for(i in 1:nrow(groundtruth)){
 }
 myPrint("Precision", "MarketCap", totalSame)
 
-#PRECISIONE COLONNA Yield
+#PRECISIONE COLONNA Dividend
 totalSame = 0
 for(i in 1:nrow(groundtruth)){
   for(j in 1:nrow(dataset)){
     if(as.character(groundtruth[i,]$Symbol) == as.character(dataset[j,]$Symbol)){
-      if(is.na(groundtruth[i,]$Yield)==F & is.na(dataset[j,]$Yield)==F){
-        if(groundtruth[i,]$Yield == dataset[j,]$Yield){
+      if(is.na(groundtruth[i,]$Dividend)==F & is.na(dataset[j,]$Dividend)==F){
+        if(groundtruth[i,]$Dividend == dataset[j,]$Dividend){
           totalSame = totalSame + 1
         }
       }  
     }
   }
 }
-myPrint("Precision", "Yield", totalSame)
+myPrint("Precision", "Dividend", totalSame)
 
 #PRECISIONE COLONNA DividendYield
 totalSame = 0
@@ -344,8 +344,6 @@ myPrint("Precision Bloomberg", "OpenPrice,ClosePrice,HighPrice,LowPrice", totalS
 
 #############################################################################################################
 
-dataset <- read.csv("Dataset.csv", stringsAsFactors = F, sep = ';', header = TRUE)
-
 #CONSISTENZA
 changePercIncosistent = 0
 changeInDollarsIncosistent = 0
@@ -360,7 +358,7 @@ previousCloseInconsistent = 0
 nSharesInconsistent = 0
 peIncosistent = 0
 marketCapInconsistent = 0
-yieldInconsistent = 0
+dividendInconsistent = 0
 dividendYieldInconsistent = 0
 highPriceLowPriceIncosistent = 0
 highPriceOpenPriceIncosistent = 0
@@ -431,7 +429,7 @@ for(i in 1:nrow(dataset)){
   
   #WARNING
   #Consistency PE > 0
-  if(dataset[i,]$PE != "" & parse_number(dataset[i,]$PE) < 0){
+  if(dataset[i,]$PE != "" & !is.na(dataset[i,]$PE) & parse_number(dataset[i,]$PE) < 0){
     print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR PE < 0"))
     peIncosistent = peIncosistent + 1
   }
@@ -442,10 +440,10 @@ for(i in 1:nrow(dataset)){
     marketCapInconsistent = marketCapInconsistent + 1
   }
   
-  #Consistency Yield > 0
-  if(!is.na(dataset[i,]$Yield) && dataset[i,]$Yield != "" & parse_number(dataset[i,]$Yield) < 0){
-    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR Yield < 0"))
-    yieldInconsistent = yieldInconsistent + 1
+  #Consistency Dividend > 0
+  if(!is.na(dataset[i,]$Dividend) && dataset[i,]$Dividend != "" & parse_number(dataset[i,]$Dividend) < 0){
+    print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol, "ERROR Dividend < 0"))
+    dividendInconsistent = dividendInconsistent + 1
   }
   
   #Consistency HighPrice > LowPrice
@@ -528,6 +526,16 @@ for(i in 1:nrow(dataset)){
     }
   }
   
+  
+  #Consistency DividendYield = Dividend/PreviousClose * 100
+  if((!is.na(dataset[i,]$DividendYield) & dataset[i,]$DividendYield != "") &
+     (!is.na(dataset[i,]$Dividend) & dataset[i,]$Dividend != "") && dataset[i,]$PreviousClose != ""){
+    if(parse_number(dataset[i,]$DividendYield) != (parse_number(dataset[i,]$Dividend)/parse_number(dataset[i,]$PreviousClose)) * 100){
+      print(paste(i, dataset[i,]$Source, dataset[i,]$Symbol,"ERRORE DividendYield != Dividend/PreviousClose * 100"))
+      dividendYieldInconsistent = dividendYieldInconsistent + 1
+    }
+  }
+  
   #Consistency MarketCap = NShares * HighPrice
   if(dataset[i,]$MarketCap != "" & dataset[i,]$NShares != ""){
     if(parse_number(dataset[i,]$MarketCap) != (parse_number(dataset[i,]$NShares) * parse_number(dataset[i,]$ClosePrice))){
@@ -563,6 +571,7 @@ myPrint("Inconstency", "PreviousClose < YearLow", previousCloseYearLowIncosisten
 myPrint("Inconstency", "ChangeInDollars != ClosePrice - PreviousClose", changeInDollarsIncosistent)
 myPrint("Inconstency", "ChangePerc != ChangeInDollars/PreviousClose * 100", changePercIncosistent)
 
+myPrint("Inconstency", "DividendYield != Dividend/PreviousClose * 100", dividendYieldInconsistent)
 myPrint("Inconstency", "MarketCap != NShares * ClosePrice", marketCapNSharesClosePriceIncosistent)
 
 myPrint("Warning", "PE < 0", peIncosistent)
@@ -588,10 +597,10 @@ for(i in 1:nrow(dataset)){
     dataset[i,]$NShares <- myMode(other)
   }
   
-  if(dataset[i,]$Yield == ""){
-    other <- dataset[dataset$Symbol == dataset[i,]$Symbol, ]$Yield
+  if(dataset[i,]$Dividend == ""){
+    other <- dataset[dataset$Symbol == dataset[i,]$Symbol, ]$Dividend
     other <- parse_number(other[other != ""])
-    dataset[i,]$Yield <- myMode(other)
+    dataset[i,]$Dividend <- myMode(other)
   }
   
   if(dataset[i,]$DividendYield == ""){
@@ -642,8 +651,8 @@ for(i in 1:nrow(dataset)){
   else
     dataset[i,]$MarketCap = parse_number(dataset[i,]$MarketCap) 
   
-  if(!is.na(dataset[i,]$Yield))
-    dataset[i,]$Yield = parse_number(dataset[i,]$Yield)
+  if(!is.na(dataset[i,]$Dividend))
+    dataset[i,]$Dividend = parse_number(dataset[i,]$Dividend)
   if(!is.na(dataset[i,]$DividendYield))
     dataset[i,]$DividendYield = parse_number(dataset[i,]$DividendYield)
   
