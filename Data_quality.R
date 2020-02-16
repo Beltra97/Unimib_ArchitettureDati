@@ -324,9 +324,9 @@ for(i in c(1:nrow(dataset))){
 }
 myPrint("Redundancy", "HighPrice,LowPrice", totalSame)
 
-#PRECISION FONTI
+#PRECISION FONTI DATASET ORIGINALE
 totalSame = 0
-ds <- dataset[dataset$Source=="yahoo-finance",]
+ds <- dataset[dataset$Source=="bloomberg",]
 for(i in 1:nrow(groundtruth)){
   for(j in 1:nrow(ds)){
     if(groundtruth[i,]$Symbol == ds[j,]$Symbol){
@@ -336,6 +336,7 @@ for(i in 1:nrow(groundtruth)){
          parse_number(groundtruth[i,]$LowPrice) == parse_number(ds[j,]$LowPrice)){
         totalSame = totalSame + 1
       }
+      
     }
   }
 }

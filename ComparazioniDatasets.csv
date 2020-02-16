@@ -12,37 +12,37 @@ Completezza Volume;0%;0%
 Completezza NShares;20%;0%
 Completezza PE;3%;3%
 Completezza MarketCap;0%;0%
-Completezza Yield;58,4%;55%
-Completezza DividendYield;57,6%;53,2%
-Completezza EPS;0,4%;0,4%
+Completezza Yield;58,40%;55%
+Completezza DividendYield;57,60%;53,20%
+Completezza EPS;0,40%;0,40%
 Completezza Dataset;9,97%;5,87%
 ;;
 Precisione OpenPrice;81%;81%
-Precisione ClosePrice;95,4%;95,4%
-Precisione ChangePerc;78,4%;78,4%
-Precisione ChangeInDollars;79,6%;90,4%
-Precisione HighPrice;94,4%;94,4%
-Precisione LowPrice;95,2%;95,2%
-Precisione PreviousClose;58,8%;97,6%
+Precisione ClosePrice;95,40%;95,40%
+Precisione ChangePerc;78,40%;78,40%
+Precisione ChangeInDollars;79,60%;90,40%
+Precisione HighPrice;94,40%;94,40%
+Precisione LowPrice;95,20%;95,20%
+Precisione PreviousClose;58,80%;97,60%
 Precisione YearHigh;86%;86%
 Precisione YearLow;94%;94%
-Precisione Volume;38,6%;38,6%
+Precisione Volume;38,60%;38,60%
 Precisione NShares;20%;52%
-Precisione PE;34,4%;34,4%
+Precisione PE;34,40%;34,40%
 Precisione MarketCap;20%;20%
-Precisione Yield;64,4%;64,4%
-Precisione DividendYield;64,6%;64,6%
-Precisione EPS;20,2%;20,2%
+Precisione Yield;64,40%;64,40%
+Precisione DividendYield;64,60%;64,60%
+Precisione EPS;20,20%;20,20%
 ;;
-Precisione Bloomberg;17,4%;17,4%
-Precisione GoogleFinance;15,2%;15,2%
-Precisione MSNMoney;15,4%;15,4%
-Precisione Nasdaq;9,2%;9,2%
-Precisione YahooFinance;4,6%;4,6%
+Precisione Bloomberg;87,00%;87,00%
+Precisione GoogleFinance;76,00%;76,00%
+Precisione MSNMoney;77,00%;77,00%
+Precisione Nasdaq;99,00%;99,00%
+Precisione YahooFinance;23,00%;23,00%
 ;;
-Ridondanza OpenPrice,ClosePrice,HighPrice,LowPrice;56,2%;56,2%
-Ridondanza OpenPrice,ClosePrice;61,2%;61,2%
-Ridondanza HighPrice,LowPrice;71,2%;71,2%
+Ridondanza OpenPrice,ClosePrice,HighPrice,LowPrice;56,20%;56,20%
+Ridondanza OpenPrice,ClosePrice;61,20%;61,20%
+Ridondanza HighPrice,LowPrice;71,20%;71,20%
 ;;
 Inconsistenza OpenPrice < 0;0%;0%
 Inconsistenza ClosePrice < 0;0%;0%
@@ -63,9 +63,9 @@ Inconsistenza LowPrice >= ClosePrice;0%;0%
 Inconsistenza YearHigh <= YearLow;0%;0%
 Inconsistenza PreviousClose >= YearHigh;0%;0%
 Inconsistenza PreviousClose <= YearLow;0%;0%
-Inconsistenza ChangeInDollars != ClosePrice - PreviousClose;58,4%;45%
-Inconsistenza ChangePerc != (ChangeInDollars/PreviousClose) * 100;59,4%;45%
-Inconsistenza MarketCap != NShares * ClosePrice;64,4%;38%
+Inconsistenza ChangeInDollars != ClosePrice - PreviousClose;58,40%;45%
+Inconsistenza ChangePerc != (ChangeInDollars/PreviousClose) * 100;59,40%;45%
+Inconsistenza MarketCap != NShares * ClosePrice;64,40%;38%
 ;;
-Casi particolari PE < 0;0,8%;0,2%
-Casi particolari PreviousClose != OpenClose;57%;42,2%
+Casi particolari PE < 0;0,80%;0,20%
+Casi particolari PreviousClose != OpenClose;57%;42,20%
